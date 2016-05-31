@@ -136,35 +136,56 @@ end
 -- POST --
 
 function API:acceptInvite(inviteId)
-	-- POST /invites/{invite.id}
+	local body = {}
+	return self:request('POST', url('/invites/%s', inviteId), body)
 end
 
 function API:acknowledgeMessage(channelId, messageId)
-	-- POST /channels/{channel.id}/messages/{message.id}/ack
+	local body = {}
+	return self:request('POST', url('/channels/%s/messages/%s/ack', channelId, messageId), body)
 end
 
-function API:beginGuildPrune(guildId)
-	-- POST /guilds/{guild.id}/prune
+function API:beginGuildPrune(guildId, days)
+	local body = {days = days}
+	return self:request('POST', url('/guilds/%s/prune', guildId), body)
 end
 
-function API:bulkDeleteMessages(channelId)
-	-- POST /channels/{channel.id}/messages/bulk_delete
+function API:bulkDeleteMessages(channelId, messageIds)
+	local body = {messages = messageIds}
+	return self:request('POST', url('/channels/%s/messages/bulk_delete', channelId), body)
 end
 
-function API:createChannelInvite(channelId)
-	-- POST /channels/{channel.id}/invites
+function API:createChannelInvite(channelId, maxAge, maxUses, temporary, xkcdpass)
+	local body = { -- all optional
+		max_age = maxAge, -- seconds, default 86400 = 24 hours
+		max_uses = maxUses, -- integer, default 0 = unlimited
+		temporary = temporary, -- bool, default false
+		xkcdpass = xkcdpass, -- bool, default false
+	}
+	return self:request('POST', url('/channels/%s/invites', channelId), body)
 end
 
-function API:createDirectMessage()
-	-- POST /users/@me/channels
+function API:createDirectMessageChannel(userId)
+	local body = {recipient_id = userId}
+	return self:request('POST', url('/users/@me/channels'), body)
 end
 
-function API:createGuild()
-	-- POST /guilds
+function API:createGuild(name, regionId, icon)
+	local body = {
+		name = name, -- 2 to 100 chars
+		region = regionId, -- just the ID
+		icon -- optional, base64 128x128 jpeg
+	}
+	return self:request('POST', url('/guilds'), body)
 end
 
-function API:createGuildChannel(guildId)
-	-- POST /guilds/{guild.id}/channels
+function API:createGuildChannel(guildId, name, type, bitrate)
+	local body = {
+		name = name, -- 2 to 100 chars
+		type = type, -- text or voice, default text, optional
+		bitrate = bitrate -- 8000 to 128000, default 64000, optional
+	}
+	return self:request('POST', url('/guilds/%s/channels', guildId), body)
 end
 
 function API:createGuildIntegration(guildId)
@@ -172,19 +193,27 @@ function API:createGuildIntegration(guildId)
 end
 
 function API:createGuildRole(guildId)
-	-- POST /guilds/{guild.id}/roles
+	local body = {} -- no options on creation
+	return self:request('POST', url('/guilds/%s/roles', guildId), body)
 end
 
-function API:createMessage(channelId)
-	-- POST /channels/{channel.id}/messages
+function API:createMessage(channelId, content, tts, nonce)
+	local body = {
+		content = content, -- 1 to 2000 chars, required
+		nonce = nonce, -- optional
+		tts = tts -- bool, optional, default false
+	}
+	return self:request('POST', url('/channels/%s/messages', channelId), body)
 end
 
 function API:syncGuildIntegrations(guildId, integrationId)
-	-- POST /guilds/{guild.id}/integrations/{integration.id}/sync
+	local body = {}
+	return self:request('POST', url('/guilds/%s/integrations/%s/sync', guildId, integrationId), body)
 end
 
 function API:triggerTypingIndicator(channelId)
-	-- POST /channels/{channel.id}/typing
+	local body = {}
+	return self:request('POST', url('/channels/%s/typing', channelId), body)
 end
 
 function API:uploadFile(channelId)
