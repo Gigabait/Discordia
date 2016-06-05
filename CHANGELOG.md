@@ -2,6 +2,18 @@
 
 *Backwards compatibility not guaranteed until after version 1.0.0*
 
+### Future
+- Added User object fallback for member[Ban/Unban]
+
+
+### 0.5.3
+- Added "0x" to Color:toHex() output
+- Added Permissions:toHex() method
+- Fixed issue where server owner was nil
+- Server.joinedAt is now a Unix timestamp
+- utils.dateToTime and resulting timestamps now support milliseconds
+
+
 ### 0.5.2
 - Fixed critical issue with lit package metadata
 

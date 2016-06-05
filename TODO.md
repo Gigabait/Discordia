@@ -6,6 +6,7 @@ Probable additions
 	- Better rate limiting
 	- Error codes
 - Handle USER_SETTINGS_UPDATE
+- Handle MESSAGE_BULK_DELETE
 - Move Server/Channel/Role positions
 - Embeds and file sharing
 - Sharding
@@ -15,6 +16,8 @@ Probable additions
 - Implement Game object
 - Twitch streaming url
 - Utilities for iterating/searching/finding objects
+- Timestamps for error messages
+- Logging support
 
 Possible additions
 - Change Client to use custom class
@@ -24,6 +27,5 @@ Possible additions
 
 Fixes Needed
 - Make delayed ready event more explicit
-- Add milliseconds to message.timestamp
 - Fix voice state count
 - Fix game updating
